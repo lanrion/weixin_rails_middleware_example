@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'http://ruby.taobao.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.2'
@@ -27,9 +27,24 @@ gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
 
-group :doc do
-  # bundle exec rake doc:rails generates the API under doc/api.
-  gem 'sdoc', require: false
+gem 'weixin_rails_middleware', path: "/Users/dylandeng/Projects/mygems/weixin_rails_middleware"
+
+group :development, :test do
+  # For debugger
+  gem "pry-rails", "~> 0.3.0"
+  gem "pry-debugger", "~> 0.2.2"
+
+  # Quiet assets turn off rails assets log like:
+  # Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2012-11-20 17:05:52 +0800
+  gem "quiet_assets", "~> 1.0.2"
+
+  # Better error page for Rails and other Rack apps
+  # https://github.com/charliesome/better_errors
+  gem "better_errors", :git => 'git://github.com/charliesome/better_errors.git'
+
+  # Retrieve the binding of a method's caller. Can also retrieve bindings even further up the stack.
+  # better_errors use this to display local variables on error pages
+  gem "binding_of_caller"
 end
 
 # Use ActiveModel has_secure_password
