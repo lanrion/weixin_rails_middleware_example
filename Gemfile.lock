@@ -6,19 +6,8 @@ GIT
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
 
-PATH
-  remote: /Users/dylandeng/Projects/mygems/weixin_rails_middleware
-  specs:
-    weixin_rails_middleware (0.0.1)
-      multi_json (>= 1.7.9)
-      multi_xml (>= 0.5.2)
-      nokogiri (>= 1.6.1)
-      rails (>= 3.1)
-      railties (>= 3.1)
-      roxml
-
 GEM
-  remote: http://ruby.taobao.org/
+  remote: http://rubygems.org/
   specs:
     actionmailer (4.0.2)
       actionpack (= 4.0.2)
@@ -148,6 +137,13 @@ GEM
     uglifier (2.4.0)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    weixin_rails_middleware (1.0.0)
+      multi_json (>= 1.7.9)
+      multi_xml (>= 0.5.2)
+      nokogiri (>= 1.6.1)
+      rails (>= 3.1)
+      railties (>= 3.1)
+      roxml
 
 PLATFORMS
   ruby
@@ -166,4 +162,4 @@ DEPENDENCIES
   sqlite3
   turbolinks
   uglifier (>= 1.3.0)
-  weixin_rails_middleware!
+  weixin_rails_middleware
