@@ -27,7 +27,7 @@ gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
 
-gem 'weixin_rails_middleware'
+gem 'weixin_rails_middleware', git: "https://github.com/lanrion/weixin_rails_middleware.git"
 
 group :development, :test do
   # For debugger
