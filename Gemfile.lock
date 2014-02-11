@@ -7,8 +7,8 @@ GIT
       erubis (>= 2.6.6)
 
 GIT
-  remote: https://github.com/lanrion/weixin_rails_middleware.git
-  revision: 6e0c4e19f4c17ff9efe918ad6696635bee036851
+  remote: git://github.com/lanrion/weixin_rails_middleware.git
+  revision: 63924a02aec2ad70043943e499b2f986b1c9a7e1
   specs:
     weixin_rails_middleware (1.0.1)
       multi_json (>= 1.7.9)
