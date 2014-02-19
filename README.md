@@ -9,7 +9,7 @@
 
   * `rails db:create`
 
-  * `rails db:migration`
+  * `rails db:migrate`
 
   * `rails server`
 
