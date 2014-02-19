@@ -7,9 +7,9 @@
 
   * `bundle install`
 
-  * `rails db:create`
+  * `rake db:create`
 
-  * `rails db:migration`
+  * `rake db:migrate`
 
   * `rails server`
 
