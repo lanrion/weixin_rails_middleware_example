@@ -1,26 +1,37 @@
 WeixinRailsMiddleware::WeixinController.class_eval do
 
   def reply
-    current_message = current_weixin_message
-    case current_message.MsgType
-    when 'text'
-      # text message handler
-      render xml: reply_text_message(current_message.ToUserName, current_message.FromUserName, "Your Message: #{current_message.Content}")
-    when 'image'
-      # image message handler
-    when 'location'
-      # LBS 回复
-      render xml: reply_text_message(current_message.ToUserName, current_message.FromUserName, "Your Location: #{current_message.Location_X},  #{current_message.Location_Y}")
-    when 'link'
-      # link message handler
-    when 'event'
-      # event messge handler
-    when 'voice'
-      # voice message handler
-    when 'video'
-      # video message handler
-    else
-      render xml: reply_text_message(current_message.ToUserName, current_message.FromUserName, 'Unknow message')
-    end
+    render xml: send("response_#{@weixin_message.MsgType}_message")
   end
+
+  private
+
+    def response_text_message
+      reply_text_message("Your Message: #{@weixin_message.Content}")
+    end
+
+    def response_location_message
+      reply_text_message("Your Location: #{@weixin_message.Location_X}, #{@weixin_message.Location_Y}")
+    end
+
+    def response_image_message
+      # image message handler
+    end
+
+    def response_link_message
+      # link message handler
+    end
+
+    def response_event_message
+      # event messge handler
+    end
+
+    def response_voice_message
+      # voice message handler
+    end
+
+    def response_video_message
+      # video message handler
+    end
+
 end
