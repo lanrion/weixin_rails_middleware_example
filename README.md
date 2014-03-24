@@ -1,6 +1,8 @@
 # README
   For: https://github.com/lanrion/weixin_rails_middleware
 
+  It will be to test `dev` branch: https://github.com/lanrion/weixin_rails_middleware/tree/dev
+
   Require Rails 4.0.2
 
 ## Usage:
