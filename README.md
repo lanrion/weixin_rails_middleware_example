@@ -1,8 +1,6 @@
 # README
   For: https://github.com/lanrion/weixin_rails_middleware
 
-  It will be to test `master` branch: https://github.com/lanrion/weixin_rails_middleware/tree/master
-
   Require Rails 4.0.2
 
 ## Usage:
