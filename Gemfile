@@ -24,10 +24,12 @@ gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 
+gem 'thin'
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
 
-gem 'weixin_rails_middleware', git: "git://github.com/lanrion/weixin_rails_middleware.git", branch: "dev"
+gem 'weixin_rails_middleware', git: "git://github.com/lanrion/weixin_rails_middleware.git"
 
 group :development, :test do
   # For debugger
