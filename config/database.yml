@@ -5,7 +5,7 @@
 #   gem 'sqlite3'
 development:
   adapter: sqlite3
-  database: db/weixin_rails_middleware_dev.sqlite3
+  database: db/weixin_rails_middleware_example.sqlite3
   pool: 5
   timeout: 5000
 

@@ -11,14 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140126161007) do
+ActiveRecord::Schema.define(version: 20140324070325) do
 
   create_table "users", force: true do |t|
     t.string   "name"
     t.string   "password"
-    t.string   "weixin_token"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "weixin_secret_key"
+    t.string   "weixin_token"
   end
+
+  add_index "users", ["weixin_secret_key"], name: "index_users_on_weixin_secret_key"
+  add_index "users", ["weixin_token"], name: "index_users_on_weixin_token"
 
 end
