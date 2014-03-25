@@ -8,10 +8,10 @@ GIT
 
 GIT
   remote: git://github.com/lanrion/weixin_rails_middleware.git
-  revision: af952b9ccdc22a50f7b4f0799e85929b59d6e31b
-  branch: dev
+  revision: cd3a5f3ca0edddc9474625de4753c3201c23130e
+  branch: master
   specs:
-    weixin_rails_middleware (1.1.0)
+    weixin_rails_middleware (1.1.1)
       multi_json (>= 1.9.0)
       multi_xml (>= 0.5.2)
       nokogiri (>= 1.6.1)
