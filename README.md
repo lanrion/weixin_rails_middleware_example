@@ -13,10 +13,6 @@
 
   * `rails server`
 
-  * `rails c` And create a user with `User.create(name: 'dylan', password: 'password', weixin_token: 'lanrion')`
-
-  * Then, Weixin Api URL: `http://localhost:3000/weixin/lanrion`
-
   * Download `ngrok` from https://ngrok.com/‎, and run `./ngrok 3000`
 
     Then, it will generate a Forwarding Url ** random ** like this:
@@ -33,13 +29,9 @@
 
     ```
 
-## Weixin Server Configure
-
-  So, copy the Weixin Api URL `http://e0ede89.ngrok.com/weixin/lanrion` and Token `lanrion` into Weixin Server Configure.
-
 ## Test Weixin Message
 
-  Send a message ** weixin_rails_middleware is good! ** , your will response a message: `Your Message: weixin_rails_middleware is good!`
+  Send a message **hi!** , your will response a message: `Your Message:  hi!`
 
 ## Secondary development
 
