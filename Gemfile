@@ -29,7 +29,7 @@ gem 'thin'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
 
-gem 'weixin_rails_middleware', git: "git://github.com/lanrion/weixin_rails_middleware.git", branch: "master"
+gem 'weixin_rails_middleware', path: "/home/lanrion/Projects/mygems/weixin_rails_middleware"
 
 group :development, :test do
   # For debugger
