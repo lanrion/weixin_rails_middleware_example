@@ -13,7 +13,7 @@
     <% @users.each do |user| %>
       <tr>
         <td><%= user.name %></td>
-        <td><%= weixin_engine.weixin_index_url(user.weixin_secret_key) %></td>
+        <td><%= weixin_engine.weixin_server_url(user.weixin_secret_key) %></td>
 
         <td><%= user.weixin_token %></td>
         <td><%= link_to 'Show', user %></td>

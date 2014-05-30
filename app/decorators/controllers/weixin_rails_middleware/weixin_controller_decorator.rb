@@ -1,10 +1,8 @@
 # encoding: utf-8
-# 1: get weixin xml params
-# @weixin_message
-# 2: public_account_class instance if you setup, otherwise return nil
-# @weixin_public_account
+# 1, @weixin_message: 获取微信所有参数.
+# 2, @weixin_public_account: 如果配置了public_account_class选项,则会返回当前实例,否则返回nil.
+# 3, @keyword: 目前微信只有这三种情况存在关键字: 文本消息, 事件推送, 接收语音识别结果
 WeixinRailsMiddleware::WeixinController.class_eval do
-  before_filter :set_keyword, only: :reply
 
   def reply
     render xml: send("response_#{@weixin_message.MsgType}_message", {})
@@ -31,9 +29,9 @@ WeixinRailsMiddleware::WeixinController.class_eval do
     # <PicUrl><![CDATA[this is a url]]></PicUrl>
     # <MediaId><![CDATA[media_id]]></MediaId>
     def response_image_message(options={})
-      @pic_url  = @weixin_message.PicUrl
       @media_id = @weixin_message.MediaId # 可以调用多媒体文件下载接口拉取数据。
-      reply_text_message("回复图片信息")
+      @pic_url  = @weixin_message.PicUrl  # 也可以直接通过此链接下载图片, 建议使用carrierwave.
+      reply_image_message(generate_image(@media_id))
     end
 
     # <Title><![CDATA[公众平台官网链接]]></Title>
@@ -46,40 +44,14 @@ WeixinRailsMiddleware::WeixinController.class_eval do
       reply_text_message("回复链接信息")
     end
 
-    def response_event_message(options={})
-      event_type = @weixin_message.Event
-      case event_type
-      when "subscribe"   # 关注公众账号
-        if @keyword.present?
-          # 扫描带参数二维码事件: 1. 用户未关注时，进行关注后的事件推送
-          reply_text_message("扫描带参数二维码事件: 1. 用户未关注时，进行关注后的事件推送, keyword: #{@keyword}")
-        end
-        reply_text_message("关注公众账号")
-      when "unsubscribe" # 取消关注
-        reply_text_message("取消关注")
-      when "SCAN"        # 扫描带参数二维码事件: 2用户已关注时的事件推送
-        reply_text_message("扫描带参数二维码事件: 2用户已关注时的事件推送, keyword: #{@keyword}")
-      when "LOCATION"    # 上报地理位置事件
-        @lat = @weixin_message.Latitude
-        @lgt = @weixin_message.Longitude
-        @precision = @weixin_message.Precision
-        reply_text_message("Your Location: #{@lat}, #{@lgt}, #{@precision}")
-      when "CLICK"       # 点击菜单拉取消息时的事件推送
-        reply_text_message("你点击了: #{@keyword}")
-      when "VIEW"        # 点击菜单跳转链接时的事件推送
-        reply_text_message("你点击了: #{@keyword}")
-      else
-        reply_text_message("处理无法识别的事件")
-      end
-
-    end
-
     # <MediaId><![CDATA[media_id]]></MediaId>
     # <Format><![CDATA[Format]]></Format>
     def response_voice_message(options={})
       @media_id = @weixin_message.MediaId # 可以调用多媒体文件下载接口拉取数据。
-      @format   = @weixin_message.format
-      reply_text_message("回复语音信息: #{@keyword}")
+      @format   = @weixin_message.Format
+      # 如果开启了语音翻译功能，@keyword则为翻译的结果
+      # reply_text_message("回复语音信息: #{@keyword}")
+      reply_voice_message(generate_voice(@media_id))
     end
 
     # <MediaId><![CDATA[media_id]]></MediaId>
@@ -91,14 +63,70 @@ WeixinRailsMiddleware::WeixinController.class_eval do
       reply_text_message("回复视频信息")
     end
 
-    def set_keyword
-      @keyword = @weixin_message.Content    || # 文本消息
-                 @weixin_message.EventKey   || # 事件推送
-                 @weixin_message.Recognition # 接收语音识别结果
+    def response_event_message(options={})
+      event_type = @weixin_message.Event
+      send("handle_#{event_type.downcase}_event")
     end
 
-    # http://apidock.com/rails/ActionController/Base/default_url_options
-    def default_url_options(options={})
-      { weichat_id: @weixin_message.FromUserName }
-    end
+    private
+
+      # 关注公众账号
+      def handle_subscribe_event
+        if @keyword.present?
+          # 扫描带参数二维码事件: 1. 用户未关注时，进行关注后的事件推送
+          return reply_text_message("扫描带参数二维码事件: 1. 用户未关注时，进行关注后的事件推送, keyword: #{@keyword}")
+        end
+        reply_text_message("关注公众账号")
+      end
+
+      # 取消关注
+      def handle_unsubscribe_event
+        Rails.logger.info("取消关注")
+      end
+
+      # 扫描带参数二维码事件: 2. 用户已关注时的事件推送
+      def handle_scan_event
+        reply_text_message("扫描带参数二维码事件: 2. 用户已关注时的事件推送, keyword: #{@keyword}")
+      end
+
+      def handle_location_event # 上报地理位置事件
+        @lat = @weixin_message.Latitude
+        @lgt = @weixin_message.Longitude
+        @precision = @weixin_message.Precision
+        reply_text_message("Your Location: #{@lat}, #{@lgt}, #{@precision}")
+      end
+
+      # 点击菜单拉取消息时的事件推送
+      def handle_click_event
+        reply_text_message("你点击了: #{@keyword}")
+      end
+
+      # 点击菜单跳转链接时的事件推送
+      def handle_view_event
+        Rails.logger.info("你点击了: #{@keyword}")
+      end
+
+      # 帮助文档: https://github.com/lanrion/weixin_authorize/issues/22
+
+      # 由于群发任务提交后，群发任务可能在一定时间后才完成，因此，群发接口调用时，仅会给出群发任务是否提交成功的提示，若群发任务提交成功，则在群发任务结束时，会向开发者在公众平台填写的开发者URL（callback URL）推送事件。
+
+      # 推送的XML结构如下（发送成功时）：
+
+      # <xml>
+      # <ToUserName><![CDATA[gh_3e8adccde292]]></ToUserName>
+      # <FromUserName><![CDATA[oR5Gjjl_eiZoUpGozMo7dbBJ362A]]></FromUserName>
+      # <CreateTime>1394524295</CreateTime>
+      # <MsgType><![CDATA[event]]></MsgType>
+      # <Event><![CDATA[MASSSENDJOBFINISH]]></Event>
+      # <MsgID>1988</MsgID>
+      # <Status><![CDATA[sendsuccess]]></Status>
+      # <TotalCount>100</TotalCount>
+      # <FilterCount>80</FilterCount>
+      # <SentCount>75</SentCount>
+      # <ErrorCount>5</ErrorCount>
+      # </xml>
+      def handle_masssendjobfinish_event
+        Rails.logger.info("回调事件处理")
+      end
+
 end
