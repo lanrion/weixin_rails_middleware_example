@@ -13,9 +13,9 @@
 
   * `rails server`
 
-  * Download `ngrok` from https://ngrok.com/‎, and run `./ngrok 3000`
+  * Download `ngrok` from https://ngrok.com , and run `./ngrok 3000`
 
-    Then, it will generate a Forwarding Url ** random ** like this:
+    Then, it will generate a Forwarding Url  **random**  like this:
 
     ```
 
