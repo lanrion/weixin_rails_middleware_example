@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.0.2'
+gem 'rails', '~>4.1'
 
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
@@ -27,14 +27,13 @@ gem 'turbolinks'
 gem 'thin'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 1.2'
+gem 'jbuilder'
 
-gem 'weixin_rails_middleware', '~> 1.2.4'
+gem 'weixin_rails_middleware', '~> 1.3.0'
 
 group :development, :test do
   # For debugger
-  gem "pry-rails", "~> 0.3.0"
-  gem "pry-debugger", "~> 0.2.2"
+  gem 'pry-byebug'
 
   # Quiet assets turn off rails assets log like:
   # Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2012-11-20 17:05:52 +0800
